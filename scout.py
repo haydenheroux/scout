@@ -79,9 +79,9 @@ is stored in the same row, expanding to the right. Returns False is writing fail
 """
 def export_as_csv(all_team_information, path):
     contents = str()
-    for (team_number, text) in all_team_information.items():
-        csv_text = ",".join(text)
-        row = team_number + "," + csv_text + "\n"
+    for (team_number, notes) in all_team_information.items():
+        csv_notes = ",".join(notes)
+        row = team_number + "," + csv_notes + "\n"
         contents += row
     with open(path, "w") as csv_file:
         csv_file.write(contents)
