@@ -91,12 +91,16 @@ def text_process_line(read_line):
 
 """
 Exports a CSV containing information about all teams. Teams numbers are stored
-in the header of the CSV, and information (e.g. notes) about the team is contained
-within the columns following the corresponding team number. Returns False if writing
-fails, otherwise returns true.
+in the left-most column of the CSV, and information (e.g. notes) about the team
+is stored in the same row, expanding to the right. Returns False is writing fails, otherwise returns True.
 """
-def export_as_csv(all_team_information):
-    pass
+def export_as_csv(all_team_information, path):
+    with open(path, "a") as csv_file:
+        for (team_number, text) in all_team_information.items():
+            csv_text = ",".join(text)
+            row = team_number + "," + csv_text + "\n"
+            csv_file.write(row)
+    return True
 
 
 """
@@ -123,7 +127,7 @@ def app():
         team_information.append(text)
         all_team_information[team_number] = team_information
 
-        export_success = export_as_csv(all_team_information)
+        export_success = export_as_csv(all_team_information, "data.csv")
         is_accepting_input = export_success
 
 
