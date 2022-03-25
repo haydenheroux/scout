@@ -54,7 +54,13 @@ that a team number is the first word of the line and the remainder of the line
 contains text information (e.g. a note). Returns team_number, text.
 """
 def text_process_line(read_line):
-    pass
+    words = read_line.split(" ")
+    team_number = words[0]
+    if team_number.isdigit() != True:
+        print("err?: entered team number is not a number")
+    text_words = words[1:]
+    text = " ".join(text_words)
+    return team_number, text
 
 
 """
