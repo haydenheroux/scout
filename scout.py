@@ -14,7 +14,13 @@ an adaptive prompt and checking for empty lines. Returns the line the
 user entered.
 """
 def get_user_input():
-    pass
+    prompt = ">"
+    if prompt[-1] != " ":
+        prompt = prompt + " "
+    text = input(prompt)
+    if len(text) == 0:
+        print("err?: empty line")
+    return text
 
 
 """
