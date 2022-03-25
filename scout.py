@@ -92,8 +92,7 @@ def export_as_csv(all_team_information, path):
     for (team_number, notes) in all_team_information.items():
         escaped_notes = [note.replace(",", ";;") for note in notes]
         csv_notes = ",".join(escaped_notes)
-        row = team_number + "," + csv_notes + "\n"
-        contents += row
+        contents += f"{team_number},{csv_notes}\n"
     with open(path, "w") as csv_file:
         csv_file.write(contents)
     return True
