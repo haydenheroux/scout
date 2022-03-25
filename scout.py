@@ -58,7 +58,8 @@ def export_as_formatted_text(all_team_information, path):
     for (team_number, notes) in all_team_information.items():
         team_text = f"{team_number}\n"
         for note in notes:
-            team_text += " • {note}\n"
+            unescaped_note = note.replace(";;", ",")
+            team_text += f" • {unescaped_note}\n"
         team_text += "\n"
         contents += team_text
     with open(path, "w") as text_file:
@@ -89,7 +90,8 @@ is stored in the same row, expanding to the right. Returns False is writing fail
 def export_as_csv(all_team_information, path):
     contents = str()
     for (team_number, notes) in all_team_information.items():
-        csv_notes = ",".join(notes)
+        escaped_notes = [note.replace(",", ";;") for note in notes]
+        csv_notes = ",".join(escaped_notes)
         row = team_number + "," + csv_notes + "\n"
         contents += row
     with open(path, "w") as csv_file:
