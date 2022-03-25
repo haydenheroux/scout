@@ -60,7 +60,7 @@ def export_as_formatted_text(all_team_information, path):
         team_text += str(team_number)
         team_text += "\n"
         for note in notes:
-            team_text += "  - "
+            team_text += " • "
             team_text += note
             team_text += "\n"
         team_text += "\n"
