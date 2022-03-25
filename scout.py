@@ -7,6 +7,8 @@ as the values. Returns an empty dictionary on error.
 """
 def import_from_csv(path):
     all_team_information = dict()
+    with open(path, "w") as csv_file:
+        pass
     with open(path) as csv_file:
         rows = csv_file.readlines()
         for row in rows:
