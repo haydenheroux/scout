@@ -30,7 +30,13 @@ empty, None is returned. If the line contains no special operations and the line
 is not empty, then the string is returned.
 """
 def get_execution_type(read_line):
-    pass
+    if len(read_line) == 0:
+        return None
+    words = read_line.split(" ")
+    # TODO: Implement aliases
+    if words[0] == "export":
+        return "EXPORT"
+    return read_line
 
 
 """
