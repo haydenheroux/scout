@@ -1,11 +1,37 @@
 #!/usr/bin/env python3
+
 """
 Reads a CSV with team numbers as headers and notes in the column and
 returns a dictionary with team numbers as keys and a list of notes
 as the values. Returns an empty dictionary on error.
 """
 def import_from_csv(path):
-    pass
+    all_team_information = dict()
+    with open(path) as csv_file:
+        # Remove newlines at the end of each line
+        lines = [line.rstrip() for line in csv_file.readlines()]
+        header = lines[0]
+
+        teams_in_order = header.split(",")
+        data = lines[1:]
+
+        for row in data:
+            notes_in_order = row.split(",")
+            for (index, note) in enumerate(notes_in_order):
+                corresponding_team = teams_in_order[index]
+                # If the team has not been recorded yet, initialize the dictionary
+                # with an empty list at the team number.
+                if corresponding_team not in all_team_information.keys():
+                    all_team_information[corresponding_team] = list()
+
+                corresponding_team_information = all_team_information[corresponding_team]
+                # If, for whatever reason, bad data ends up within the dictionary,
+                # erase that data with an empty list.
+                # TODO: Implement additional checks for "bad data"
+                if type(corresponding_team_information) != list:
+                    corresponding_team_information = list()
+                all_team_information[corresponding_team].append(note)
+    return all_team_information
 
 
 """
@@ -94,8 +120,8 @@ def app():
         team_number, text = text_process_line(read_line)
 
         team_information = all_team_information[team_number]
-        updated_team_information = team_information.append(text)
-        all_team_information[team_number] = updated_team_information
+        team_information.append(text)
+        all_team_information[team_number] = team_information
 
         export_success = export_as_csv(all_team_information)
         is_accepting_input = export_success
