@@ -1,6 +1,6 @@
 # scout
 
-![Gondola](gongoliers-gondola-image.png)
+[![Gongoliers Gondola Logo](gongoliers-gondola-logo.png)](https://github.com/Gongoliers)
 
 ## Features
 
