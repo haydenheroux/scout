@@ -8,29 +8,12 @@ as the values. Returns an empty dictionary on error.
 def import_from_csv(path):
     all_team_information = dict()
     with open(path) as csv_file:
-        # Remove newlines at the end of each line
-        lines = [line.rstrip() for line in csv_file.readlines()]
-        header = lines[0]
-
-        teams_in_order = header.split(",")
-        data = lines[1:]
-
-        for row in data:
-            notes_in_order = row.split(",")
-            for (index, note) in enumerate(notes_in_order):
-                corresponding_team = teams_in_order[index]
-                # If the team has not been recorded yet, initialize the dictionary
-                # with an empty list at the team number.
-                if corresponding_team not in all_team_information.keys():
-                    all_team_information[corresponding_team] = list()
-
-                corresponding_team_information = all_team_information[corresponding_team]
-                # If, for whatever reason, bad data ends up within the dictionary,
-                # erase that data with an empty list.
-                # TODO: Implement additional checks for "bad data"
-                if type(corresponding_team_information) != list:
-                    corresponding_team_information = list()
-                all_team_information[corresponding_team].append(note)
+        rows = csv_file.readlines()
+        for row in rows:
+            data = row.strip().split(",")
+            team_number = data[0]
+            notes = data[1:]
+            all_team_information[team_number] = notes
     return all_team_information
 
 
@@ -95,11 +78,13 @@ in the left-most column of the CSV, and information (e.g. notes) about the team
 is stored in the same row, expanding to the right. Returns False is writing fails, otherwise returns True.
 """
 def export_as_csv(all_team_information, path):
-    with open(path, "a") as csv_file:
-        for (team_number, text) in all_team_information.items():
-            csv_text = ",".join(text)
-            row = team_number + "," + csv_text + "\n"
-            csv_file.write(row)
+    contents = str()
+    for (team_number, text) in all_team_information.items():
+        csv_text = ",".join(text)
+        row = team_number + "," + csv_text + "\n"
+        contents += row
+    with open(path, "w") as csv_file:
+        csv_file.write(contents)
     return True
 
 
@@ -123,6 +108,15 @@ def app():
 
         team_number, text = text_process_line(read_line)
 
+        # Force-ensure that the dictionary is capable of storing the note for the team.
+        # If the team is not in the dictionary already, initialize an empty list
+        # for the note to be appended to. If the data within the team's entry is
+        # corrupted, overwrite the data with an empty list.
+        # TODO: Implement a more elegant method for ensuring the dictionary is
+        # capable of storing the note.
+        if (team_number not in all_team_information.keys() or
+            type(all_team_information[team_number]) != list):
+            all_team_information[team_number] = list()
         team_information = all_team_information[team_number]
         team_information.append(text)
         all_team_information[team_number] = team_information
