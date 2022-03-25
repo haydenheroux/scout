@@ -54,7 +54,20 @@ recorded. All teams share the same report. Returns False if writing fails,
 otherwise returns True.
 """
 def export_as_formatted_text(all_team_information, path):
-    pass
+    contents = str()
+    for (team_number, notes) in all_team_information.items():
+        team_text = str()
+        team_text += str(team_number)
+        team_text += "\n"
+        for note in notes:
+            team_text += "  - "
+            team_text += note
+            team_text += "\n"
+        team_text += "\n"
+        contents += team_text
+    with open(path, "w") as text_file:
+        text_file.write(contents)
+    return True
 
 
 """
